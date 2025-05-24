@@ -37,14 +37,24 @@ stretch_plan_schemas = StretchPlanSchema(many=True)
 
 @app.route('/register', methods=['POST'])
 def register():
-    data = request.get_json()
+    if not request.is_json:
+        return jsonify(message="Request must be JSON"), 400
+
+    data = request.get_json(silent=True)
+    if not data:
+        return jsonify(message="Invalid JSON body"), 400
+
     username = data.get('username')
     password = data.get('password')
+
+    if not username or not password:
+        return jsonify(message="Missing username or password"), 400
+
     user = User(username=username, password=password)
     db.session.add(user)
     db.session.commit()
-    return jsonify(message='User registered'), 201
 
+    return jsonify(message='User registered'), 201
 @app.route('/login', methods=['POST'])
 def login():
     username = request.json['username']
