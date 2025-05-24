@@ -37,8 +37,9 @@ stretch_plan_schemas = StretchPlanSchema(many=True)
 
 @app.route('/register', methods=['POST'])
 def register():
-    username = request.json['username']
-    password = request.json['password']
+    data = request.get_json()
+username = data.get('username')
+password = data.get('password')
     user = User(username=username, password=password)
     db.session.add(user)
     db.session.commit()
