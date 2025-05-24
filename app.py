@@ -14,7 +14,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///backwise.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'your-secret-key'
 
-Bind all extensions here (before any model)
+# Bind all extensions here (before any model)
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 jwt = JWTManager(app)
