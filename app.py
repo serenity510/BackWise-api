@@ -45,7 +45,7 @@ stretch_plan_schema = StretchPlanSchema()
 stretch_plan_schemas = StretchPlanSchema(many=True)
 
 from flask_cors import CORS
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 @app.route('/register', methods=['POST'])
 def register():
