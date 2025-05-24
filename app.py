@@ -35,26 +35,29 @@ user_schema = UserSchema()
 stretch_plan_schema = StretchPlanSchema()
 stretch_plan_schemas = StretchPlanSchema(many=True)
 
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app)  # <-- Add this after your app definition
+
 @app.route('/register', methods=['POST'])
 def register():
-    if not request.is_json:
-        return jsonify(message="Request must be JSON"), 400
+    try:
+        data = request.get_json(force=True)
+        username = data.get('username')
+        password = data.get('password')
 
-    data = request.get_json()
-    if not data:
-        return jsonify(message="Invalid JSON body"), 400
+        if not username or not password:
+            return jsonify(message="Missing username or password"), 400
 
-    username = data.get('username')
-    password = data.get('password')
+        user = User(username=username, password=password)
+        db.session.add(user)
+        db.session.commit()
 
-    if not username or not password:
-        return jsonify(message="Missing username or password"), 400
+        return jsonify(message="User registered"), 201
 
-    user = User(username=username, password=password)
-    db.session.add(user)
-    db.session.commit()
-
-    return jsonify(message='User registered'), 201
+    except Exception as e:
+        return jsonify(message="Error", error=str(e)), 500
 @app.route('/login', methods=['POST'])
 def login():
     username = request.json['username']
