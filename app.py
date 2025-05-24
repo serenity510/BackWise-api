@@ -95,7 +95,9 @@ def get_plans():
     plans = StretchPlan.query.filter_by(user_id=user_id).all()
     return jsonify(stretch_plan_schemas.dump(plans)), 200
 
-if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
-    app.run(debug=True)
+app = Flask(__name__)
+app.config[...]  # all config
+db = SQLAlchemy(app)
+ma = Marshmallow(app)
+jwt = JWTManager(app)
+CORS(app)
