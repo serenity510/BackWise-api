@@ -40,7 +40,7 @@ def register():
     if not request.is_json:
         return jsonify(message="Request must be JSON"), 400
 
-    data = request.get_json(silent=True)
+    data = request.get_json()
     if not data:
         return jsonify(message="Invalid JSON body"), 400
 
