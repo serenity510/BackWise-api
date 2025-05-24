@@ -96,7 +96,9 @@ def get_plans():
     return jsonify(stretch_plan_schemas.dump(plans)), 200
 
 app = Flask(__name__)
-app.config[...]  # all config
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///backwise.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['JWT_SECRET_KEY'] = 'your-secret-key'
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 jwt = JWTManager(app)
